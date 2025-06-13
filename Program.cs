@@ -96,36 +96,60 @@ class Program
         } while (fim != "sim");
     }
 
-    static void RegistrarSaida(string[] nome, int[] idade, int[] numeroIngresso, string[] tipo, out int contVip, out int contComum, out int contPriori)
+    static void RegistrarSaida()
     {
-        contVip = 0;
-        contComum = 0;
-        contPriori = 0;
+
     }
 
-    static void ConsultarIngresso() { }
+    static void ConsultarIngresso(int entradaVip, int entradaComum, int entradaPriori, int contVip, int contComum, int contPriori)
+    {
+        System.Console.WriteLine("O número de ingressos VIPs disponiveis é " + (entradaVip - contVip));
+        System.Console.WriteLine("O número de ingressos comuns disponiveis é " + (entradaComum - contComum));
+        System.Console.WriteLine("O número de ingressos Prioritários disponiveis é " + (entradaPriori - contPriori));
+    }
 
-    static void ExibirResumo() { }
+    static void ExibirResumo()
+    {
+
+    }
+    static void ExibirLista()
+    {
+
+    }
 
     static void Main()
     {
-        string[] ingVip = new string[3]; // [Quantidade máxima de ingressos de cada tipo]
-        string[] ingComum = new string[3]; // [Quantidade máxima de ingressos de cada tipo]
-        string[] ingPriori = new string[3]; // [Quantidade máxima de ingressos de cada tipo] 
-        int[] idade = new int[5];
-        string[] nome = new string[5];
-        int[] numeroIngresso = new int[5];
-        string[] tipo = new string[5];
-        int opcao, entrada = 0, entradaVip, entradaComum, entradaPriori, contIngresso = 0, contVip = 0, contComum = 0, contPriori = 0;
-        string cidade;
-
         Stream entradaDados = File.Open("show_in.txt", FileMode.Open);
         StreamReader leitor = new StreamReader(entradaDados);
+        Stream saida = File.Open("show_out.txt", FileMode.Create);
+        StreamWriter escritor = new StreamWriter(saida);
+
+        int entradaVip = int.Parse(leitor.ReadLine());
+        int entradaComum = int.Parse(leitor.ReadLine());
+        int entradaPriori = int.Parse(leitor.ReadLine());
+
+        int totalIng = entradaVip + entradaPriori + entradaComum;
+        string[] nomeVip = new string[entradaVip];
+        string[] nomeComum = new string[entradaComum];
+        string[] nomePriori = new string[entradaPriori];
+
+        int[] idadeVip = new int[entradaVip];
+        int[] idadeComum = new int[entradaComum];
+        int[] idadePriori = new int[entradaPriori];
+
+        int[] numeroVip = new int[entradaVip];
+        int[] numeroComum = new int[entradaComum];
+        int[] numeroPriori = new int[entradaPriori];
+
+        string[] ingVip = new string[entradaVip]; // [Quantidade máxima de ingressos de cada tipo]
+        string[] ingComum = new string[entradaComum]; // [Quantidade máxima de ingressos de cada tipo]
+        string[] ingPriori = new string[entradaPriori]; // [Quantidade máxima de ingressos de cada tipo]
+        string[] tipo = new string[totalIng];
+
+        int opcao, entrada = 0, contIngresso = 0, contVip = 0, contComum = 0, contPriori = 0, idadeUltimo, numeroIngressoUltimo;
+        string cidade, nomeUltimo, tipoUltimo;
 
         cidade = leitor.ReadLine();
-        entradaVip = int.Parse(leitor.ReadLine());
-        entradaComum = int.Parse(leitor.ReadLine());
-        entradaPriori = int.Parse(leitor.ReadLine());
 
         System.Console.WriteLine(entradaComum + ", " + entradaPriori + ", " + entradaVip);
         opcao = Menu();
@@ -137,22 +161,42 @@ class Program
                 contIngresso++;
                 entrada++;
                 break;
+
             case 2:
+
                 break;
+
             case 3:
+                ConsultarIngresso(entradaVip, entradaComum, entradaPriori, contVip, contComum, contPriori);
                 break;
+
             case 4:
+
                 break;
+
             case 5:
+                ExibirResumo();
                 break;
+
             case 6:
+
                 break;
+
             default:
                 System.Console.WriteLine("Insira uma opção válida");
                 break;
         }
 
+
+        escritor.WriteLine("Cidade do evento: " + cidade);
+        escritor.WriteLine("Número de espectadores: " + entrada);
+        escritor.WriteLine("VIPS: " + contVip + " espectadores (" + (contVip * 100) / entradaVip + "% do total disponível) ");
+        escritor.WriteLine("Comuns: " + contComum + " espectadores (" + (contComum * 100) / entradaComum + "% do total disponível) ");
+        escritor.WriteLine("Prioritários: " + contPriori + " espectadores (" + (contPriori * 100) / entradaPriori + "% do total disponível) ");
+
         leitor.Close();
         entradaDados.Close();
+        saida.Close();
+        escritor.Close();
     }
 }
