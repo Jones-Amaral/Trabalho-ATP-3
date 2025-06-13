@@ -44,7 +44,7 @@ class Program
         string fim = "nao";
         do
         {
-            int idade, numeroIng;
+            int idade;
             string nome;
             System.Console.WriteLine("Insira o nome do espectador");
             nome = Console.ReadLine();
@@ -186,41 +186,44 @@ class Program
 
         cidade = leitor.ReadLine();
 
-        System.Console.WriteLine(entradaComum + ", " + entradaPriori + ", " + entradaVip);
-        opcao = Menu();
-
-        switch (opcao)
+        System.Console.WriteLine("Ingressos comuns: " + entradaComum + ", ingressos Prioritários: " + entradaPriori + ",  ingressos Vips: " + entradaVip);
+        do
         {
-            case 1:
-                RegistrarEntrada(tipo, nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori, ref contVip, ref contComum, ref contPriori, ref entrada, ref entradaVip, ref entradaComum, ref entradaPriori, ref nomeUltimoEntrada, ref tipoUltimoEntrada, ref idadeUltimoEntrada, ref numeroIngressoUltimoEntrada);
-                contIngresso++;
-                entrada++;
-                break;
+            opcao = Menu();
+            switch (opcao)
+            {
+                case 1:
+                    RegistrarEntrada(tipo, nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori, ref contVip, ref contComum, ref contPriori, ref entrada, ref entradaVip, ref entradaComum, ref entradaPriori, ref nomeUltimoEntrada, ref tipoUltimoEntrada, ref idadeUltimoEntrada, ref numeroIngressoUltimoEntrada);
+                    contIngresso++;
+                    entrada++;
+                    break;
 
-            case 2:
+                case 2:
+                    RegistrarSaida();
+                    break;
 
-                break;
+                case 3:
+                    ConsultarIngresso(entradaVip, entradaComum, entradaPriori, contVip, contComum, contPriori);
+                    break;
 
-            case 3:
-                ConsultarIngresso(entradaVip, entradaComum, entradaPriori, contVip, contComum, contPriori);
-                break;
+                case 4:
+                    ExibirResumo();
+                    break;
 
-            case 4:
+                case 5:
+                    ExibirLista(nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori);
+                    break;
 
-                break;
+                case 6:
 
-            case 5:
-                ExibirResumo();
-                break;
+                    break;
 
-            case 6:
+                default:
+                    System.Console.WriteLine("Insira uma opção válida");
+                    break;
+            }
+        } while (opcao != 6);
 
-                break;
-
-            default:
-                System.Console.WriteLine("Insira uma opção válida");
-                break;
-        }
 
 
         escritor.WriteLine("Cidade do evento: " + cidade);
