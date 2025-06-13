@@ -1,0 +1,15 @@
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\Trabalho-ATP-3.csproj.AssemblyReference.cache
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\Trabalho-ATP-3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\Trabalho-ATP-3.AssemblyInfoInputs.cache
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\Trabalho-ATP-3.AssemblyInfo.cs
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\Trabalho-ATP-3.csproj.CoreCompileInputs.cache
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\bin\Debug\net6.0\Trabalho-ATP-3.exe
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\bin\Debug\net6.0\Trabalho-ATP-3.deps.json
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\bin\Debug\net6.0\Trabalho-ATP-3.runtimeconfig.json
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\bin\Debug\net6.0\Trabalho-ATP-3.dll
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\bin\Debug\net6.0\Trabalho-ATP-3.pdb
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\Trabalho-ATP-3.dll
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\refint\Trabalho-ATP-3.dll
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\Trabalho-ATP-3.pdb
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\Trabalho-ATP-3.genruntimeconfig.cache
+C:\Users\joaok\OneDrive\Área de Trabalho\PUC\Algoritmo e tecnica (ATP)\Trabalho Dupla\Trabalho-ATP-3\obj\Debug\net6.0\ref\Trabalho-ATP-3.dll
