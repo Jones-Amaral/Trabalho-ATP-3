@@ -145,7 +145,7 @@
         /* Ingressos Vips */
         string[] nomeVip = new string[entradaVip];
         int[] idadeVip = new int[entradaVip];
-        int[] numeroVip = new int[entradaVip];\
+        int[] numeroVip = new int[entradaVip];
 
         /* Ingressos Comuns */
         string[] nomeComum = new string[entradaComum];
