@@ -1,29 +1,4 @@
-﻿/* Uma empresa que realiza eventos em cidades contratou sua empresa para desenvolver um sistema para gerenciar os ingressos do evento. 
-Os eventos possuem ingressos limitados, divididos em três categorias: VIP, Prioritários e Comuns. 
-Cada categoria tem um número máximo de ingressos disponíveis. 
-Para controlar os dados dos espectadores presentes no evento, utilize vetores para armazenar as informações de cada espectador (nome, idade, número do ingresso e tipo de ingresso), sendo um vetor para cada categoria de ingresso.
-Desenvolva um programa em C# para a gestão do evento, apresentando ao usuário um menu com as seguintes opções:
-
-1. Registrar entrada de um espectador: solicitar nome, idade, número do ingresso e tipo de ingresso. 
-Os dados devem ser armazenados no vetor correspondente à categoria do ingresso, se houver disponibilidade.
-
-2. Registrar saída de um espectador: solicitar o número do ingresso e tipo de ingresso. 
-O espectador deve ser removido do vetor correspondente e o ingresso liberado novamente para uso.
-
-3. Consultar ingressos disponíveis: 
-exibir quantos ingressos ainda estão disponíveis em cada uma das categorias, considerando a capacidade máxima e o número de entradas registradas nos vetores.
-
-4. Exibir resumo do evento: mostrar:
-o Número total de espectadores presentes;
-o Quantidade e percentual de espectadores por categoria;
-o Ingressos disponíveis por categoria;
-
-5. Listar todos os espectadores presentes: 
-exibir os dados (nome, idade, número do ingresso e tipo de ingresso) de todos os espectadores registrados nos vetores, organizados por categoria.
-
-6. Sair */using System.Collections.Specialized;
-
-class Program
+﻿/*  */class Program
 {
     static int Menu()
     {
@@ -34,7 +9,7 @@ class Program
             opcao = int.Parse(Console.ReadLine());
             if (opcao > 6 || opcao < 1)
                 System.Console.WriteLine("Insira uma opção válida");
-        } while (opcao != 6); // Isso manterá o menu até digitar 6 (talvez você queira != 0 em vez disso)
+        } while (opcao != 6);
 
         return opcao;
     }
@@ -153,40 +128,49 @@ class Program
 
     static void Main()
     {
+        /* Variáveis e aberturas para Arquivos */
         Stream entradaDados = File.Open("show_in.txt", FileMode.Open);
         StreamReader leitor = new StreamReader(entradaDados);
         Stream saida = File.Open("show_out.txt", FileMode.Create);
         StreamWriter escritor = new StreamWriter(saida);
 
+        /* Recebe a quantidade de ingresso pelo arquivo */
         int entradaVip = int.Parse(leitor.ReadLine());
         int entradaComum = int.Parse(leitor.ReadLine());
         int entradaPriori = int.Parse(leitor.ReadLine());
 
+        /* Total de ingressos */
         int totalIng = entradaVip + entradaPriori + entradaComum;
+
+        /* Ingressos Vips */
         string[] nomeVip = new string[entradaVip];
-        string[] nomeComum = new string[entradaComum];
-        string[] nomePriori = new string[entradaPriori];
-
         int[] idadeVip = new int[entradaVip];
-        int[] idadeComum = new int[entradaComum];
-        int[] idadePriori = new int[entradaPriori];
+        int[] numeroVip = new int[entradaVip];\
 
-        int[] numeroVip = new int[entradaVip];
+        /* Ingressos Comuns */
+        string[] nomeComum = new string[entradaComum];
+        int[] idadeComum = new int[entradaComum];
         int[] numeroComum = new int[entradaComum];
+
+        /* Ingressos Prioritários */
+        string[] nomePriori = new string[entradaPriori];
+        int[] idadePriori = new int[entradaPriori];
         int[] numeroPriori = new int[entradaPriori];
 
-        string[] ingVip = new string[entradaVip]; // [Quantidade máxima de ingressos de cada tipo]
-        string[] ingComum = new string[entradaComum]; // [Quantidade máxima de ingressos de cada tipo]
-        string[] ingPriori = new string[entradaPriori]; // [Quantidade máxima de ingressos de cada tipo]
-
+        /* Vetor com os tipos de ingressos de todos | O número do ingresso é o índice do tipo para achar o ingresso */
         string[] tipo = new string[totalIng];
 
-        int opcao, entrada = 0, contIngresso = 0, contVip = 0, contComum = 0, contPriori = 0, idadeUltimoEntrada = 0, numeroIngressoUltimoEntrada = 0;
+
+        /* Opcao para o menu */
+        /* Entrada para quantas pessoas entraram no total */
+        /* Conts para quantas pessoas entraram em cada categoria*/
+        /* UltimoEntrada para as informações do último espectador que entrou */
+        int opcao, entrada = 0, contVip = 0, contComum = 0, contPriori = 0, idadeUltimoEntrada = 0, numeroIngressoUltimoEntrada = 0;
         string cidade, nomeUltimoEntrada = "", tipoUltimoEntrada = "";
 
+        /* Pega o nome da cidade pelo arquivo */
         cidade = leitor.ReadLine();
 
-        System.Console.WriteLine("Ingressos comuns: " + entradaComum + ", ingressos Prioritários: " + entradaPriori + ",  ingressos Vips: " + entradaVip);
         do
         {
             opcao = Menu();
@@ -194,7 +178,6 @@ class Program
             {
                 case 1:
                     RegistrarEntrada(tipo, nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori, ref contVip, ref contComum, ref contPriori, ref entrada, ref entradaVip, ref entradaComum, ref entradaPriori, ref nomeUltimoEntrada, ref tipoUltimoEntrada, ref idadeUltimoEntrada, ref numeroIngressoUltimoEntrada);
-                    contIngresso++;
                     entrada++;
                     break;
 
@@ -225,13 +208,14 @@ class Program
         } while (opcao != 6);
 
 
-
+        /* Gravar no arquivo */
         escritor.WriteLine("Cidade do evento: " + cidade);
         escritor.WriteLine("Número de espectadores: " + entrada);
         escritor.WriteLine("VIPS: " + contVip + " espectadores (" + (contVip * 100) / entradaVip + "% do total disponível) ");
         escritor.WriteLine("Comuns: " + contComum + " espectadores (" + (contComum * 100) / entradaComum + "% do total disponível) ");
         escritor.WriteLine("Prioritários: " + contPriori + " espectadores (" + (contPriori * 100) / entradaPriori + "% do total disponível) ");
 
+        /* Fechar variáveis de gravação e leitura */
         leitor.Close();
         entradaDados.Close();
         saida.Close();
