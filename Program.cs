@@ -39,49 +39,67 @@ class Program
         return opcao;
     }
 
-    static void RegistrarEntrada(string[] nome, int[] idade, int[] numeroIngresso, string[] tipo, string[] ingVip, string[] ingComum, string[] ingPriori, int contVip, int contComum, int contPriori, int entrada)
+    static void RegistrarEntrada(string[] tipo, string[] nomeVip, string[] nomeComum, string[] nomePriori, int[] idadeVip, int[] idadeComum, int[] idadePriori, int[] numeroVip, int[] numeroComum, int[] numeroPriori, ref int contVip, ref int contComum, ref int contPriori, ref int entrada, ref int entradaVip, ref int entradaComum, ref int entradaPriori, ref string nomeUltimoEntrada, ref string tipoUltimoEntrada, ref int idadeUltimoEntrada, ref int numeroIngressoUltimoEntrada)
     {
         string fim = "nao";
         do
         {
+            int idade, numeroIng;
+            string nome;
             System.Console.WriteLine("Insira o nome do espectador");
-            nome[entrada] = Console.ReadLine();
+            nome = Console.ReadLine();
 
             System.Console.WriteLine("Insira a idade espectador");
-            idade[entrada] = int.Parse(Console.ReadLine());
+            idade = int.Parse(Console.ReadLine());
 
-            numeroIngresso[entrada] = entrada;
-
-            System.Console.WriteLine("Insira o tipo de ingresso do espectador");
+            System.Console.WriteLine("Insira o tipo de ingresso do espectador (V ou C ou P)");
             tipo[entrada] = Console.ReadLine();
 
             switch (tipo[entrada])
             {
-                case "vip":
-                    if (contVip < ingVip.Length)
+                case "V":
+                    if (contVip < entradaVip)
                     {
                         tipo[entrada] = "VIP";
-                        ingVip[contVip] = nome[entrada];
+                        nomeVip[contVip] = nome;
+                        idadeVip[contVip] = idade;
+                        numeroVip[contVip] = entrada;
+                        nomeUltimoEntrada = nome;
+                        tipoUltimoEntrada = tipo[entrada];
+                        idadeUltimoEntrada = idade;
+                        numeroIngressoUltimoEntrada = entrada;
                         contVip++;
+                        fim = "sim";
                     }
-                    fim = "sim";
                     break;
 
-                case "comum":
-                    if (contComum < ingComum.Length)
+                case "C":
+                    if (contComum < entradaComum)
                     {
                         tipo[entrada] = "Comum";
-                        ingComum[entrada] = nome[entrada];
+                        nomeComum[contComum] = nome;
+                        idadeComum[contComum] = idade;
+                        numeroComum[contComum] = entrada;
+                        nomeUltimoEntrada = nome;
+                        tipoUltimoEntrada = tipo[entrada];
+                        idadeUltimoEntrada = idade;
+                        numeroIngressoUltimoEntrada = entrada;
                         contComum++;
                         fim = "sim";
                     }
                     break;
 
-                case "prioritario":
-                    if (contPriori < ingPriori.Length)
+                case "P":
+                    if (contPriori < entradaPriori)
                     {
                         tipo[entrada] = "Prioritário";
-                        ingPriori[entrada] = nome[entrada];
+                        nomePriori[contPriori] = nome;
+                        idadePriori[contPriori] = idade;
+                        numeroPriori[contPriori] = entrada;
+                        nomeUltimoEntrada = nome;
+                        tipoUltimoEntrada = tipo[entrada];
+                        idadeUltimoEntrada = idade;
+                        numeroIngressoUltimoEntrada = entrada;
                         contPriori++;
                         fim = "sim";
                     }
@@ -112,9 +130,25 @@ class Program
     {
 
     }
-    static void ExibirLista()
+    static void ExibirLista(string[] nomeVip, string[] nomeComum, string[] nomePriori, int[] idadeVip, int[] idadeComum, int[] idadePriori, int[] numeroVip, int[] numeroComum, int[] numeroPriori)
     {
+        System.Console.WriteLine("-- VIPS --");
+        for (int i = 0; i < nomeVip.Length; i++)
+        {
+            System.Console.WriteLine("Espectador: " + nomeVip[i] + " | idade: " + idadeVip[i] + " | n° Ingresso: " + numeroVip[i]);
+        }
+        System.Console.WriteLine("-- Comuns --");
 
+        for (int i = 0; i < nomeComum.Length; i++)
+        {
+            System.Console.WriteLine("Espectador: " + nomeComum[i] + " | idade: " + idadeComum[i] + " | n° Ingresso: " + numeroComum[i]);
+        }
+        System.Console.WriteLine("-- Prioritários --");
+
+        for (int i = 0; i < nomePriori.Length; i++)
+        {
+            System.Console.WriteLine("Espectador: " + nomePriori[i] + " | idade: " + idadePriori[i] + " | n° Ingresso: " + numeroPriori[i]);
+        }
     }
 
     static void Main()
@@ -144,10 +178,11 @@ class Program
         string[] ingVip = new string[entradaVip]; // [Quantidade máxima de ingressos de cada tipo]
         string[] ingComum = new string[entradaComum]; // [Quantidade máxima de ingressos de cada tipo]
         string[] ingPriori = new string[entradaPriori]; // [Quantidade máxima de ingressos de cada tipo]
+
         string[] tipo = new string[totalIng];
 
-        int opcao, entrada = 0, contIngresso = 0, contVip = 0, contComum = 0, contPriori = 0, idadeUltimo, numeroIngressoUltimo;
-        string cidade, nomeUltimo, tipoUltimo;
+        int opcao, entrada = 0, contIngresso = 0, contVip = 0, contComum = 0, contPriori = 0, idadeUltimoEntrada = 0, numeroIngressoUltimoEntrada = 0;
+        string cidade, nomeUltimoEntrada = "", tipoUltimoEntrada = "";
 
         cidade = leitor.ReadLine();
 
@@ -157,7 +192,7 @@ class Program
         switch (opcao)
         {
             case 1:
-                RegistrarEntrada(nome, idade, numeroIngresso, tipo, ingVip, ingComum, ingPriori, contVip, contComum, contPriori, entrada);
+                RegistrarEntrada(tipo, nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori, ref contVip, ref contComum, ref contPriori, ref entrada, ref entradaVip, ref entradaComum, ref entradaPriori, ref nomeUltimoEntrada, ref tipoUltimoEntrada, ref idadeUltimoEntrada, ref numeroIngressoUltimoEntrada);
                 contIngresso++;
                 entrada++;
                 break;
