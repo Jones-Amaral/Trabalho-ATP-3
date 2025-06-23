@@ -5,7 +5,7 @@
         int opcao;
         do
         {
-            System.Console.WriteLine("Digite uma opção:\n1) Registrar saída de um espectador.\n2) Registrar Saída de um espectador.\n3) Consultar ingressos disponíveis.\n4) Exibir Resumo.\n5) Listar espectadores presentes.\n6) Sair.");
+            System.Console.WriteLine("Digite uma opção:\n1) Registrar entrada de um espectador.\n2) Registrar Saída de um espectador.\n3) Consultar ingressos disponíveis.\n4) Exibir Resumo.\n5) Listar espectadores presentes.\n6) Sair.");
             opcao = int.Parse(Console.ReadLine());
             if (opcao > 6 || opcao < 1)
                 System.Console.WriteLine("Insira uma opção válida");
@@ -89,9 +89,83 @@
         } while (fim != "sim");
     }
 
-    static void RegistrarSaida()
+    static void RegistrarSaida(string[] tipo, string[] nomeVip, string[] nomeComum, string[] nomePriori,
+                           int[] idadeVip, int[] idadeComum, int[] idadePriori,
+                           int[] numeroVip, int[] numeroComum, int[] numeroPriori,
+                           ref int contVip, ref int contComum, ref int contPriori)
     {
+        System.Console.WriteLine("Digite o número do ingresso do espectador que deseja sair:");
+        int numero = int.Parse(Console.ReadLine());
 
+        if (numero < 0 || numero >= tipo.Length || tipo[numero] == null)
+        {
+            System.Console.WriteLine("Número de ingresso inválido.");
+            return;
+        }
+
+        string categoria = tipo[numero];
+
+        switch (categoria)
+        {
+            case "VIP":
+                for (int i = 0; i < contVip; i++)
+                {
+                    if (numeroVip[i] == numero)
+                    {
+                        for (int j = i; j < contVip - 1; j++)
+                        {
+                            nomeVip[j] = nomeVip[j + 1];
+                            idadeVip[j] = idadeVip[j + 1];
+                            numeroVip[j] = numeroVip[j + 1];
+                        }
+                        contVip--;
+                        tipo[numero] = null;
+                        System.Console.WriteLine("Saída registrada com sucesso.");
+                        return;
+                    }
+                }
+                break;
+
+            case "Comum":
+                for (int i = 0; i < contComum; i++)
+                {
+                    if (numeroComum[i] == numero)
+                    {
+                        for (int j = i; j < contComum - 1; j++)
+                        {
+                            nomeComum[j] = nomeComum[j + 1];
+                            idadeComum[j] = idadeComum[j + 1];
+                            numeroComum[j] = numeroComum[j + 1];
+                        }
+                        contComum--;
+                        tipo[numero] = null;
+                        System.Console.WriteLine("Saída registrada com sucesso.");
+                        return;
+                    }
+                }
+                break;
+
+            case "Prioritário":
+                for (int i = 0; i < contPriori; i++)
+                {
+                    if (numeroPriori[i] == numero)
+                    {
+                        for (int j = i; j < contPriori - 1; j++)
+                        {
+                            nomePriori[j] = nomePriori[j + 1];
+                            idadePriori[j] = idadePriori[j + 1];
+                            numeroPriori[j] = numeroPriori[j + 1];
+                        }
+                        contPriori--;
+                        tipo[numero] = null;
+                        System.Console.WriteLine("Saída registrada com sucesso.");
+                        return;
+                    }
+                }
+                break;
+        }
+
+        System.Console.WriteLine("Espectador não encontrado ou já saiu.");
     }
 
     static void ConsultarIngresso(int entradaVip, int entradaComum, int entradaPriori, int contVip, int contComum, int contPriori)
@@ -101,10 +175,35 @@
         System.Console.WriteLine("O número de ingressos Prioritários disponiveis é " + (entradaPriori - contPriori));
     }
 
-    static void ExibirResumo()
+    static void ExibirResumo(int contVip, int contComum, int contPriori, int entradaVip, int entradaComum, int entradaPriori)
     {
+        int totalPresentes = contVip + contComum + contPriori;
 
+        System.Console.WriteLine("\n===== RESUMO DO EVENTO =====");
+        System.Console.WriteLine("Número total de espectadores presentes: " + totalPresentes);
+
+        if (totalPresentes > 0)
+        {
+            int percVip = (contVip * 100) / totalPresentes;
+            int percComum = (contComum * 100) / totalPresentes;
+            int percPriori = (contPriori * 100) / totalPresentes;
+
+            System.Console.WriteLine("\nQuantidade e percentual por categoria:");
+            System.Console.WriteLine("VIP: " + contVip + " (" + percVip + "%)");
+            System.Console.WriteLine("Comum: " + contComum + " (" + percComum + "%)");
+            System.Console.WriteLine("Prioritário: " + contPriori + " (" + percPriori + "%)");
+        }
+        else
+        {
+            System.Console.WriteLine("Nenhum espectador presente no momento.");
+        }
+
+        System.Console.WriteLine("\nIngressos disponíveis por categoria:");
+        System.Console.WriteLine("VIP: " + (entradaVip - contVip));
+        System.Console.WriteLine("Comum: " + (entradaComum - contComum));
+        System.Console.WriteLine("Prioritário: " + (entradaPriori - contPriori));
     }
+
     static void ExibirLista(string[] nomeVip, string[] nomeComum, string[] nomePriori, int[] idadeVip, int[] idadeComum, int[] idadePriori, int[] numeroVip, int[] numeroComum, int[] numeroPriori)
     {
         System.Console.WriteLine("-- VIPS --");
@@ -182,7 +281,7 @@
                     break;
 
                 case 2:
-                    RegistrarSaida();
+                    RegistrarSaida(tipo, nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori, ref contVip, ref contComum, ref contPriori);
                     break;
 
                 case 3:
@@ -190,7 +289,7 @@
                     break;
 
                 case 4:
-                    ExibirResumo();
+                    ExibirResumo(contVip, contComum, contPriori, entradaVip, entradaComum, entradaPriori);
                     break;
 
                 case 5:
@@ -198,7 +297,7 @@
                     break;
 
                 case 6:
-
+                    System.Console.WriteLine("Encerrando o programa... Obrigado por utilizar o sistema.");
                     break;
 
                 default:
