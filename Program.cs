@@ -9,7 +9,7 @@
             opcao = int.Parse(Console.ReadLine());
             if (opcao > 6 || opcao < 1)
                 System.Console.WriteLine("Insira uma opção válida");
-        } while (opcao != 6);
+        } while (opcao < 1 && opcao > 6);
 
         return opcao;
     }
@@ -89,10 +89,7 @@
         } while (fim != "sim");
     }
 
-    static void RegistrarSaida(string[] tipo, string[] nomeVip, string[] nomeComum, string[] nomePriori,
-                           int[] idadeVip, int[] idadeComum, int[] idadePriori,
-                           int[] numeroVip, int[] numeroComum, int[] numeroPriori,
-                           ref int contVip, ref int contComum, ref int contPriori)
+    static void RegistrarSaida(string[] tipo, string[] nomeVip, string[] nomeComum, string[] nomePriori, int[] idadeVip, int[] idadeComum, int[] idadePriori, int[] numeroVip, int[] numeroComum, int[] numeroPriori, ref int contVip, ref int contComum, ref int contPriori)
     {
         System.Console.WriteLine("Digite o número do ingresso do espectador que deseja sair:");
         int numero = int.Parse(Console.ReadLine());
@@ -204,25 +201,35 @@
         System.Console.WriteLine("Prioritário: " + (entradaPriori - contPriori));
     }
 
-    static void ExibirLista(string[] nomeVip, string[] nomeComum, string[] nomePriori, int[] idadeVip, int[] idadeComum, int[] idadePriori, int[] numeroVip, int[] numeroComum, int[] numeroPriori)
+    static void ExibirLista(string[] nomeVip, string[] nomeComum, string[] nomePriori, int[] idadeVip, int[] idadeComum, int[] idadePriori, int[] numeroVip, int[] numeroComum, int[] numeroPriori, int contVip, int contComum, int contPriori)
     {
         System.Console.WriteLine("-- VIPS --");
         for (int i = 0; i < nomeVip.Length; i++)
         {
-            System.Console.WriteLine("Espectador: " + nomeVip[i] + " | idade: " + idadeVip[i] + " | n° Ingresso: " + numeroVip[i]);
+            if (idadeVip[i] != 0)
+                System.Console.WriteLine("Espectador: " + nomeVip[i] + " | idade: " + idadeVip[i] + " | n° Ingresso: " + numeroVip[i]);
         }
+        if (contVip == 0)
+            System.Console.WriteLine("Não há espectadores Vips presentes.");
         System.Console.WriteLine("-- Comuns --");
 
         for (int i = 0; i < nomeComum.Length; i++)
         {
-            System.Console.WriteLine("Espectador: " + nomeComum[i] + " | idade: " + idadeComum[i] + " | n° Ingresso: " + numeroComum[i]);
+            if (idadeComum[i] != 0)
+                System.Console.WriteLine("Espectador: " + nomeComum[i] + " | idade: " + idadeComum[i] + " | n° Ingresso: " + numeroComum[i]);
         }
+        if (contComum == 0)
+            System.Console.WriteLine("Não há espectadores Comuns presentes.");
+
         System.Console.WriteLine("-- Prioritários --");
 
         for (int i = 0; i < nomePriori.Length; i++)
         {
-            System.Console.WriteLine("Espectador: " + nomePriori[i] + " | idade: " + idadePriori[i] + " | n° Ingresso: " + numeroPriori[i]);
+            if (idadePriori[i] != 0)
+                System.Console.WriteLine("Espectador: " + nomePriori[i] + " | idade: " + idadePriori[i] + " | n° Ingresso: " + numeroPriori[i]);
         }
+        if (contPriori == 0)
+            System.Console.WriteLine("Não há espectadores Prioritários presentes.");
     }
 
     static void Main()
@@ -232,6 +239,9 @@
         StreamReader leitor = new StreamReader(entradaDados);
         Stream saida = File.Open("show_out.txt", FileMode.Create);
         StreamWriter escritor = new StreamWriter(saida);
+
+        /* Pega o nome da cidade pelo arquivo */
+        string cidade = leitor.ReadLine();
 
         /* Recebe a quantidade de ingresso pelo arquivo */
         int entradaVip = int.Parse(leitor.ReadLine());
@@ -259,16 +269,13 @@
         /* Vetor com os tipos de ingressos de todos | O número do ingresso é o índice do tipo para achar o ingresso */
         string[] tipo = new string[totalIng];
 
-
+        int opcao, entrada = 0, contVip = 0, contComum = 0, contPriori = 0, idadeUltimoEntrada = 0, numeroIngressoUltimoEntrada = 0;
         /* Opcao para o menu */
         /* Entrada para quantas pessoas entraram no total */
         /* Conts para quantas pessoas entraram em cada categoria*/
-        /* UltimoEntrada para as informações do último espectador que entrou */
-        int opcao, entrada = 0, contVip = 0, contComum = 0, contPriori = 0, idadeUltimoEntrada = 0, numeroIngressoUltimoEntrada = 0;
-        string cidade, nomeUltimoEntrada = "", tipoUltimoEntrada = "";
 
-        /* Pega o nome da cidade pelo arquivo */
-        cidade = leitor.ReadLine();
+        string nomeUltimoEntrada = "", tipoUltimoEntrada = "";
+        /* UltimoEntrada para as informações do último espectador que entrou */
 
         do
         {
@@ -293,7 +300,7 @@
                     break;
 
                 case 5:
-                    ExibirLista(nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori);
+                    ExibirLista(nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori, contVip, contComum, contPriori);
                     break;
 
                 case 6:
@@ -316,8 +323,8 @@
 
         /* Fechar variáveis de gravação e leitura */
         leitor.Close();
+        escritor.Close();
         entradaDados.Close();
         saida.Close();
-        escritor.Close();
     }
 }
