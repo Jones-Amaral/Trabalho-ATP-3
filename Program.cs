@@ -9,7 +9,7 @@
             opcao = int.Parse(Console.ReadLine());
             if (opcao > 6 || opcao < 1)
                 System.Console.WriteLine("Insira uma opção válida");
-        } while (opcao < 1 && opcao > 6);
+        } while (opcao < 1 || opcao > 6);
 
         return opcao;
     }
@@ -28,7 +28,7 @@
             idade = int.Parse(Console.ReadLine());
 
             System.Console.WriteLine("Insira o tipo de ingresso do espectador (V ou C ou P)");
-            tipo[entrada] = Console.ReadLine();
+            tipo[entrada] = Console.ReadLine().Trim().ToUpper();
 
             switch (tipo[entrada])
             {
@@ -89,35 +89,72 @@
         } while (fim != "sim");
     }
 
-    static void RegistrarSaida(string[] tipo, string[] nomeVip, string[] nomeComum, string[] nomePriori, int[] idadeVip, int[] idadeComum, int[] idadePriori, int[] numeroVip, int[] numeroComum, int[] numeroPriori, ref int contVip, ref int contComum, ref int contPriori)
+    static void RegistrarSaida(string[] tipo, string[] nomeVip, string[] nomeComum, string[] nomePriori, int[] idadeVip, int[] idadeComum, int[] idadePriori, int[] numeroVip, int[] numeroComum, int[] numeroPriori, ref int contVip, ref int contComum, ref int contPriori, ref string nomeUltimoSaida, ref string tipoUltimoSaida, ref int idadeUltimoSaida, ref int numeroIngressoUltimoSaida)
     {
-        System.Console.WriteLine("Digite o número do ingresso do espectador que deseja sair:");
-        int numero = int.Parse(Console.ReadLine());
+        Console.Write("Digite o tipo de ingresso do espectador (VIP, Comum ou Prioritário): ");
+        string tipoIngresso = Console.ReadLine();
 
-        if (numero < 0 || numero >= tipo.Length || tipo[numero] == null)
+        Console.Write("Digite o número do ingresso do espectador que deseja sair: ");
+        if (!int.TryParse(Console.ReadLine(), out int numero))
         {
-            System.Console.WriteLine("Número de ingresso inválido.");
+            Console.WriteLine("Número do ingresso inválido.");
             return;
         }
 
-        string categoria = tipo[numero];
+        // Verificar se o número está dentro dos limites do vetor tipo
+        if (numero < 0 || numero >= tipo.Length)
+        {
+            Console.WriteLine("Número do ingresso inválido.");
+            return;
+        }
 
-        switch (categoria)
+        // Verificar se o ingresso está realmente ocupado
+        if (string.IsNullOrEmpty(tipo[numero]))
+        {
+            Console.WriteLine("Número do ingresso não está atribuído a nenhum espectador.");
+            return;
+        }
+
+        // Padronizar o tipo armazenado
+        string tipoArmazenado = tipo[numero].ToUpper();
+
+        // Verifica se o tipo informado bate com o tipo armazenado
+        if (tipoIngresso != tipoArmazenado.ToUpper())
+        {
+            Console.WriteLine("O tipo informado não corresponde ao número do ingresso.");
+            return;
+        }
+
+        // Remover espectador da categoria correta
+        switch (tipoArmazenado)
         {
             case "VIP":
                 for (int i = 0; i < contVip; i++)
                 {
                     if (numeroVip[i] == numero)
                     {
+                        // Salvar dados do último que saiu
+                        nomeUltimoSaida = nomeVip[i];
+                        tipoUltimoSaida = "VIP";
+                        idadeUltimoSaida = idadeVip[i];
+                        numeroIngressoUltimoSaida = numeroVip[i];
+
+                        // Remover e deslocar os vetores para frente
                         for (int j = i; j < contVip - 1; j++)
                         {
                             nomeVip[j] = nomeVip[j + 1];
                             idadeVip[j] = idadeVip[j + 1];
                             numeroVip[j] = numeroVip[j + 1];
                         }
+                        // Limpar última posição
+                        nomeVip[contVip - 1] = null;
+                        idadeVip[contVip - 1] = 0;
+                        numeroVip[contVip - 1] = 0;
+
                         contVip--;
                         tipo[numero] = null;
-                        System.Console.WriteLine("Saída registrada com sucesso.");
+
+                        Console.WriteLine("Saída registrada com sucesso.");
                         return;
                     }
                 }
@@ -128,15 +165,25 @@
                 {
                     if (numeroComum[i] == numero)
                     {
+                        nomeUltimoSaida = nomeComum[i];
+                        tipoUltimoSaida = "Comum";
+                        idadeUltimoSaida = idadeComum[i];
+                        numeroIngressoUltimoSaida = numeroComum[i];
+
                         for (int j = i; j < contComum - 1; j++)
                         {
                             nomeComum[j] = nomeComum[j + 1];
                             idadeComum[j] = idadeComum[j + 1];
                             numeroComum[j] = numeroComum[j + 1];
                         }
+                        nomeComum[contComum - 1] = null;
+                        idadeComum[contComum - 1] = 0;
+                        numeroComum[contComum - 1] = 0;
+
                         contComum--;
                         tipo[numero] = null;
-                        System.Console.WriteLine("Saída registrada com sucesso.");
+
+                        Console.WriteLine("Saída registrada com sucesso.");
                         return;
                     }
                 }
@@ -147,22 +194,35 @@
                 {
                     if (numeroPriori[i] == numero)
                     {
+                        nomeUltimoSaida = nomePriori[i];
+                        tipoUltimoSaida = "Prioritário";
+                        idadeUltimoSaida = idadePriori[i];
+                        numeroIngressoUltimoSaida = numeroPriori[i];
+
                         for (int j = i; j < contPriori - 1; j++)
                         {
                             nomePriori[j] = nomePriori[j + 1];
                             idadePriori[j] = idadePriori[j + 1];
                             numeroPriori[j] = numeroPriori[j + 1];
                         }
+                        nomePriori[contPriori - 1] = null;
+                        idadePriori[contPriori - 1] = 0;
+                        numeroPriori[contPriori - 1] = 0;
+
                         contPriori--;
                         tipo[numero] = null;
-                        System.Console.WriteLine("Saída registrada com sucesso.");
+
+                        Console.WriteLine("Saída registrada com sucesso.");
                         return;
                     }
                 }
                 break;
-        }
 
-        System.Console.WriteLine("Espectador não encontrado ou já saiu.");
+            default:
+                Console.WriteLine("Tipo de ingresso inválido.");
+                break;
+        }
+        Console.WriteLine("Espectador não encontrado ou já saiu.");
     }
 
     static void ConsultarIngresso(int entradaVip, int entradaComum, int entradaPriori, int contVip, int contComum, int contPriori)
@@ -171,13 +231,12 @@
         System.Console.WriteLine("O número de ingressos comuns disponiveis é " + (entradaComum - contComum));
         System.Console.WriteLine("O número de ingressos Prioritários disponiveis é " + (entradaPriori - contPriori));
     }
-
-    static void ExibirResumo(int contVip, int contComum, int contPriori, int entradaVip, int entradaComum, int entradaPriori)
+    static void ExibirResumo(int contVip, int contComum, int contPriori, int entradaVip, int entradaComum, int entradaPriori, string nomeUltimoEntrada, string tipoUltimoEntrada, int idadeUltimoEntrada, int numeroIngressoUltimoEntrada, string nomeUltimoSaida, string tipoUltimoSaida, int idadeUltimoSaida, int numeroIngressoUltimoSaida)
     {
         int totalPresentes = contVip + contComum + contPriori;
 
-        System.Console.WriteLine("\n===== RESUMO DO EVENTO =====");
-        System.Console.WriteLine("Número total de espectadores presentes: " + totalPresentes);
+        Console.WriteLine("\n===== RESUMO DO EVENTO =====");
+        Console.WriteLine("Número total de espectadores presentes: " + totalPresentes);
 
         if (totalPresentes > 0)
         {
@@ -185,20 +244,26 @@
             int percComum = (contComum * 100) / totalPresentes;
             int percPriori = (contPriori * 100) / totalPresentes;
 
-            System.Console.WriteLine("\nQuantidade e percentual por categoria:");
-            System.Console.WriteLine("VIP: " + contVip + " (" + percVip + "%)");
-            System.Console.WriteLine("Comum: " + contComum + " (" + percComum + "%)");
-            System.Console.WriteLine("Prioritário: " + contPriori + " (" + percPriori + "%)");
+            Console.WriteLine("\nQuantidade e percentual por categoria:");
+            Console.WriteLine($"VIP: {contVip} ({percVip}%)");
+            Console.WriteLine($"Comum: {contComum} ({percComum}%)");
+            Console.WriteLine($"Prioritário: {contPriori} ({percPriori}%)");
         }
         else
         {
-            System.Console.WriteLine("Nenhum espectador presente no momento.");
+            Console.WriteLine("Nenhum espectador presente no momento.");
         }
 
-        System.Console.WriteLine("\nIngressos disponíveis por categoria:");
-        System.Console.WriteLine("VIP: " + (entradaVip - contVip));
-        System.Console.WriteLine("Comum: " + (entradaComum - contComum));
-        System.Console.WriteLine("Prioritário: " + (entradaPriori - contPriori));
+        Console.WriteLine("\nIngressos disponíveis por categoria:");
+        Console.WriteLine("VIP: " + (entradaVip - contVip));
+        Console.WriteLine("Comum: " + (entradaComum - contComum));
+        Console.WriteLine("Prioritário: " + (entradaPriori - contPriori));
+
+        Console.WriteLine("\nÚltimo espectador que entrou:");
+        Console.WriteLine($"Nome: {nomeUltimoEntrada} | Tipo: {tipoUltimoEntrada} | Idade: {idadeUltimoEntrada} | Nº ingresso: {numeroIngressoUltimoEntrada}");
+
+        Console.WriteLine("\nÚltimo espectador que saiu:");
+        Console.WriteLine($"Nome: {nomeUltimoSaida} | Tipo: {tipoUltimoSaida} | Idade: {idadeUltimoSaida} | Nº ingresso: {numeroIngressoUltimoSaida}");
     }
 
     static void ExibirLista(string[] nomeVip, string[] nomeComum, string[] nomePriori, int[] idadeVip, int[] idadeComum, int[] idadePriori, int[] numeroVip, int[] numeroComum, int[] numeroPriori, int contVip, int contComum, int contPriori)
@@ -235,9 +300,9 @@
     static void Main()
     {
         /* Variáveis e aberturas para Arquivos */
-        Stream entradaDados = File.Open("show_in.txt", FileMode.Open);
+        Stream entradaDados = File.Open("show_in.txt", FileMode.Open, FileAccess.Read);
         StreamReader leitor = new StreamReader(entradaDados);
-        Stream saida = File.Open("show_out.txt", FileMode.Create);
+        Stream saida = File.Open("show_out.txt", FileMode.Create, FileAccess.Write);
         StreamWriter escritor = new StreamWriter(saida);
 
         /* Pega o nome da cidade pelo arquivo */
@@ -277,6 +342,11 @@
         string nomeUltimoEntrada = "", tipoUltimoEntrada = "";
         /* UltimoEntrada para as informações do último espectador que entrou */
 
+        string nomeUltimoSaida = "", tipoUltimoSaida = "";
+        int idadeUltimoSaida = 0, numeroIngressoUltimoSaida = 0;
+
+        
+
         do
         {
             opcao = Menu();
@@ -288,7 +358,7 @@
                     break;
 
                 case 2:
-                    RegistrarSaida(tipo, nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori, ref contVip, ref contComum, ref contPriori);
+                    RegistrarSaida(tipo, nomeVip, nomeComum, nomePriori, idadeVip, idadeComum, idadePriori, numeroVip, numeroComum, numeroPriori, ref contVip, ref contComum, ref contPriori, ref nomeUltimoSaida, ref tipoUltimoSaida, ref idadeUltimoSaida, ref numeroIngressoUltimoSaida);
                     break;
 
                 case 3:
@@ -296,7 +366,7 @@
                     break;
 
                 case 4:
-                    ExibirResumo(contVip, contComum, contPriori, entradaVip, entradaComum, entradaPriori);
+                    ExibirResumo(contVip, contComum, contPriori, entradaVip, entradaComum, entradaPriori, nomeUltimoEntrada, tipoUltimoEntrada, idadeUltimoEntrada, numeroIngressoUltimoEntrada, nomeUltimoSaida, tipoUltimoSaida, idadeUltimoSaida, numeroIngressoUltimoSaida);
                     break;
 
                 case 5:
